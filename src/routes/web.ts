@@ -1,11 +1,11 @@
-import { Request, Response, Router, Express } from "express";
+import { Router, Express } from "express";
+import { initHome, getUserPage } from "../controller/homeController";
 
 const router = Router();
 
 const initWebRoutes = (app: Express) => {
-  router.get("/", (req: Request, res: Response) => {
-    res.send("Hello from Express TS with JWT");
-  });
+  router.get("/", initHome);
+  router.get("/user", getUserPage);
   app.use("/", router);
 };
 export default initWebRoutes;
