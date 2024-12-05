@@ -6,6 +6,12 @@ const app = express();
 
 configViewEngine(app);
 
+// Middleware for parsing JSON payloads
+app.use(express.json());
+
+// Middleware for parsing URL-encoded data
+app.use(express.urlencoded({ extended: true }));
+
 initWebRoutes(app);
 
 app.listen(process.env.PORT || 8080, () => {
