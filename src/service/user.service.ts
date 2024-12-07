@@ -31,8 +31,8 @@ export const createUser = ({
   const hashPassword: string = hashPw(password);
   return new Promise((resolve, reject) => {
     connection.query(
-      `INSERT INTO users (email, password, username) VALUES (?, ?, ?)`,
-      [email, hashPassword, username],
+      `INSERT INTO users (email, password, username,createdAt, updatedAt) VALUES (?, ?, ?,?,?)`,
+      [email, hashPassword, username, new Date(), new Date()],
       (err, result) => {
         if (err) {
           return reject(err);
@@ -93,9 +93,9 @@ export const postEditUser = (
   return new Promise((resolve, reject) => {
     connection.query(
       `UPDATE users
-        SET email = ?, username = ?
+        SET email = ?, username = ?, updatedAt =?
         WHERE id = ?`,
-      [email, username, id],
+      [email, username, new Date(), id],
       (err, result) => {
         if (err) {
           return reject(err);

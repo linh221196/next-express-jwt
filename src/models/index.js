@@ -1,6 +1,6 @@
 'use strict';
 
-import config from '../config/config.json'
+import config from '../src/config/config.json'
 import process from 'process';
 import Sequelize from 'sequelize';
 import path from 'path';
