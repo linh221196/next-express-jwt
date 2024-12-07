@@ -1,40 +1,72 @@
 import { Response, Request } from "express";
-import mysql from "mysql2";
 
-const connection = mysql.createConnection({
-  host: process.env.HOST || "localhost",
-  user: process.env.USER || "root",
-  database: process.env.DATABASE || "jwt",
-  password: process.env.PASSWORD || "root",
-});
+import {
+  createUser,
+  getAllUser,
+  delUserById,
+  getEditUser,
+  postEditUser,
+} from "../service/user.service";
 
 export const initHome = (req: Request, res: Response) => {
   const name = "Linh";
   res.render(`home.ejs`, { name });
 };
 
-export const getUserPage = (req: Request, res: Response) => {
-  res.render(`user.ejs`);
+export const getUserPage = async (req: Request, res: Response) => {
+  try {
+    const usersList = await getAllUser();
+    res.render(`user.ejs`, { usersList });
+  } catch (error) {
+    console.error("Error when fetching users's data:", error);
+    res.status(500).send("Failed to create user");
+  }
 };
 
-export const postCreateUser = (req: Request, res: Response) => {
-  const { email, password, username } = req.body;
-  console.log(req.body);
-  connection.query(
-    `INSERT INTO users (email, password, username) VALUES (?, ?, ?)`,
-    [email, password, username],
-    (err, result, fields) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log(result, fields);
-    }
-  );
+export const postCreateUser = async (req: Request, res: Response) => {
+  const referer = req.get("referer") || "/";
+  try {
+    await createUser({ req });
+    await getAllUser();
+    res.redirect(referer);
+  } catch (error) {
+    console.error("Error when fetching users's data:", error);
+    res.status(500).send("Failed to create user");
+  }
+};
 
-  res.send(`postCreateUser <br/>
-    email: ${email} <br/>
-    username: ${username}
+export const deleteUserById = async (req: Request, res: Response) => {
+  const referer = req.get("referer") || "/";
+  const { id } = req.params;
+  try {
+    await delUserById(parseInt(id));
+    res.redirect(referer);
+  } catch (error) {
+    console.error("Error when deleting user:", error);
+    res.status(500).send("Failed to delete user");
+  }
+};
 
-    `);
+export const getEditUserById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const userInfo = await getEditUser(parseInt(id));
+    res.render("editUser.ejs", { userInfo });
+  } catch (error) {
+    console.error("Error when deleting user:", error);
+    res.status(500).send("Failed to delete user");
+  }
+};
+
+export const postEditUserById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { username, email } = req.body;
+  try {
+    await postEditUser(parseInt(id), username, email);
+    const usersList = await getAllUser();
+    res.render(`user.ejs`, { usersList });
+  } catch (error) {
+    console.error("Error when editing user:", error);
+    res.status(500).send("Failed to edit user");
+  }
 };
