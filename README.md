@@ -1,4 +1,4 @@
-A backend server run TS, Nodejs, Express w/ JWT and MVC design Patern
+A backend server run TS, Nodejs, Express w/ JWT, Sequelize ORM and MVC design Patern
 
 Src: https://blog.logrocket.com/how-to-set-up-node-typescript-express/#creating-package-json-file
 
