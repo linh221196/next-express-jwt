@@ -1,19 +1,19 @@
 import { Request } from "express";
 import { QueryResult } from "mysql2";
-import mysql from "mysql2";
+//import mysql from "mysql2";
 import bcrypt from "bcryptjs";
-import { Users } from "../models/users.model";
+import  Users  from "../models/users.model";
 
 interface UserServiceProps {
   req: Request;
 }
 
-const connection = mysql.createConnection({
-  host: process.env.HOST || "localhost",
-  user: process.env.USER || "root",
-  database: process.env.DATABASE || "jwt",
-  password: process.env.PASSWORD || "root",
-});
+// const connection = mysql.createConnection({
+//   host: process.env.HOST || "localhost",
+//   user: process.env.USER || "root",
+//   database: process.env.DATABASE || "jwt",
+//   password: process.env.PASSWORD || "root",
+// });
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -31,7 +31,12 @@ export const createUser = ({
   const { email, password, username } = req.body;
   const hashPassword: string = hashPw(password);
   return new Promise((resolve, reject) => {
-    Users.create({ email: email, password: hashPassword, username: username })
+    Users.create({
+      email: email,
+      password: hashPassword,
+      username: username,
+      role: "USER",
+    })
       .then((result) => {
         console.log("createUser", result);
         resolve(result);
@@ -43,17 +48,17 @@ export const createUser = ({
   });
 };
 
-export const getAllUser = (): Promise<Error | QueryResult> => {
-  return new Promise((resolve, reject) => {
-    connection.query(`select * from users`, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      console.log("getAllUser ", result);
-      return resolve(result);
-    });
-  });
-};
+// export const getAllUser = (): Promise<Error | QueryResult> => {
+//   return new Promise((resolve, reject) => {
+//     connection.query(`select * from users`, (err, result) => {
+//       if (err) {
+//         return reject(err);
+//       }
+//       console.log("getAllUser ", result);
+//       return resolve(result);
+//     });
+//   });
+// };
 
 export const delUserById = (
   id: number

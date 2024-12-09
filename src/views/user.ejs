@@ -64,6 +64,7 @@
               <th scope="col">#</th>
               <th scope="col">Username</th>
               <th scope="col">Email</th>
+              <th scope="col">Role</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -73,6 +74,7 @@
                 <th scope="row"><%= index + 1 %></th>
                 <td class="flex flex-grow"><%= user.username %></td>
                 <td><%= user.email %></td>
+                <td><%= user.role %></td>
                 <td class="row">
                   <form action="/edit-user/<%= user.id%>" method="GET" class="col">
                   <button class="btn btn-primary" 

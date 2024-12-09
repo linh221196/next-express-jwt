@@ -2,13 +2,12 @@ import { Response, Request } from "express";
 
 import {
   createUser,
-  getAllUser,
   delUserById,
   getEditUser,
   postEditUser,
 } from "../service/user.service";
 
-import { Users } from "../models/users.model";
+import  Users  from "../models/users.model";
 
 export const initHome = (req: Request, res: Response) => {
   const name = "Linh";
@@ -17,7 +16,8 @@ export const initHome = (req: Request, res: Response) => {
 
 export const getUserPage = async (req: Request, res: Response) => {
   try {
-    const usersList = await Users.findAll();
+    const usersList = await Users.findAll({ order: [[`id`, "DESC"]] }); //ASC
+    console.log(usersList);
     res.render(`user.ejs`, { usersList });
   } catch (error) {
     console.error("Error when fetching users's data:", error);
@@ -25,22 +25,10 @@ export const getUserPage = async (req: Request, res: Response) => {
   }
 };
 
-// export const getUserPage = async (req: Request, res: Response) => {
-//   try {
-//     const usersList = await getAllUser();
-//     res.render(`user.ejs`, { usersList });
-//   } catch (error) {
-//     console.error("Error when fetching users's data:", error);
-//     res.status(500).send("Failed to get user");
-//   }
-// };
-
 export const postCreateUser = async (req: Request, res: Response) => {
-  const referer = req.get("referer") || "/";
   try {
     await createUser({ req });
-    await getAllUser();
-    res.redirect(referer);
+    res.redirect("/user");
   } catch (error) {
     console.error("Error when fetching users's data:", error);
     res.status(500).send("Failed to create user");
