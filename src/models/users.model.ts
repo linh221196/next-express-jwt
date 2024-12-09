@@ -1,8 +1,10 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "./index";
-import { User } from "../@types/user";
+import { User } from "../@types/User";
 
-export class Users extends Model<User> {
+type UserCreate = Optional<User, "id">;
+
+export class Users extends Model<User, UserCreate> {
   public readonly id!: number; //굳이 안넣어줘도 될 것 같지만 공식문서에 있으니깐 일단 넣어줌.
   public email!: string;
   public password!: string;

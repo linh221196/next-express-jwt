@@ -75,8 +75,9 @@ export const postEditUserById = async (req: Request, res: Response) => {
   const { username, email } = req.body;
   try {
     await postEditUser(parseInt(id), username, email);
-    const usersList = await getAllUser();
-    res.render(`user.ejs`, { usersList });
+    // const usersList = await getAllUser();
+    // res.render(`user.ejs`, { usersList });
+    res.redirect("/user");
   } catch (error) {
     console.error("Error when editing user:", error);
     res.status(500).send("Failed to edit user");
