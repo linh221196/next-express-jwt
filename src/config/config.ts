@@ -1,13 +1,15 @@
-import * as dotenv from "dotenv";
-dotenv.config();
+"use strict";
 
-export const config = {
-  development: {
-    username: process.env.USERNAME || "root",
-    password: process.env.PASSWORD || "root",
-    database: process.env.DBNAME || "jwt",
-    host: process.env.HOST || "localhost",
-    port: process.env.PORT || 8080,
-    dialect: "mysql",
-  },
-};
+import { Sequelize } from "sequelize-typescript";
+import Users from "../models/users.model";
+import Projects from "../models/projects.model";
+import ProjectMembers from "../models/project_members";
+
+const sequelize = new Sequelize("jwt", "root", "root", {
+  host: "localhost",
+  dialect: "mysql",
+  logging: console.log,
+  models: [Users, Projects, ProjectMembers],
+});
+
+export { sequelize };

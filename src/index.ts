@@ -3,8 +3,6 @@ import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
 import { sequelize } from "./models";
 
-
-
 const app = express();
 
 configViewEngine(app);
@@ -19,7 +17,6 @@ initWebRoutes(app);
 
 app.listen(process.env.PORT || 8080, async () => {
   console.log("Express JWT w/ TS running on: http://localhost:8080/ ");
-  await sequelize.sync();
   await sequelize
     .authenticate()
     .then(async () => {

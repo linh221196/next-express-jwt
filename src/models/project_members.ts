@@ -1,36 +1,27 @@
-import { DataTypes, Model } from "sequelize";
-import { sequelize } from "./index";
+import {
+  Column,
+  DataType,
+  Model,
+  Table,
+  ForeignKey,
+} from "sequelize-typescript";
 import Users from "./users.model";
 import Projects from "./projects.model";
 
-class ProjectMembers extends Model {}
+@Table({
+  modelName: "ProjectMembers",
+  freezeTableName: true,
+  timestamps: true,
+  updatedAt: "updateTimestamp",
+})
+class ProjectMembers extends Model {
+  @ForeignKey(() => Users)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  declare userId: number;
 
-ProjectMembers.init(
-  {
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Users,
-        key: "id",
-      },
-    },
-    projectId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Projects,
-        key: "id",
-      },
-    },
-  },
-  {
-    modelName: "ProjectMembers",
-    sequelize,
-    freezeTableName: true,
-    timestamps: true,
-    updatedAt: "updateTimestamp",
-  }
-);
+  @ForeignKey(() => Projects)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  declare projectId: number;
+}
 
 export default ProjectMembers;

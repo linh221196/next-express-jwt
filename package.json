@@ -9,7 +9,8 @@
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+     "migrate": "npx sequelize-cli db:migrate --config src/config/config.ts"
   },
   "author": "linh221196",
   "license": "ISC",
@@ -20,8 +21,10 @@
     "ejs": "^3.1.10",
     "express": "^4.21.1",
     "mysql2": "^3.11.5",
+    "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.5",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.2",
+    "sequelize-typescript": "^2.1.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.25.9",
@@ -32,6 +35,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.1",
+    "@types/validator": "^13.12.2",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-plugin-import": "^2.31.0",
